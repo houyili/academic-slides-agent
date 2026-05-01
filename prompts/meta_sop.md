@@ -96,7 +96,7 @@ Multi-column ablation tables from the paper should be pre-cropped as PNG images 
 ```yaml
 ---
 marp: true
-theme: theme-4k    # NEVER use 'default' for 4K
+theme: academic-emerald-4k    # NEVER use 'default' for 4K
 size: 4k
 math: katex
 paginate: true
@@ -136,7 +136,7 @@ Exit 0 = all pass. Exit 1 = failures found.
 ```
 while true:
   1. Agent generates/fixes slides.md
-  2. Run: marp --pdf slides.md --theme theme-4k.css --allow-local-files
+  2. Run: marp --pdf slides.md --theme academic-emerald-4k.css --allow-local-files
   3. Run: python3 validate.py slides.md
   4. If Exit 0 → DONE
   5. If Exit 1 → Feed errors back to Agent → goto 1

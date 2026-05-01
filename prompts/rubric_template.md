@@ -1,53 +1,58 @@
-# ICLR 2026 Oral Presentation: Hardened Generation Skill
+# Hardened Slide Generation — Rubric Checklist Template
 
-## FATAL LESSONS (from 4 failed iterations)
+This is a **paper-agnostic** rubric template. Copy it into your workspace and adapt the paper-specific items before starting generation.
 
-### Lesson 1: Markdown Inside HTML is BROKEN in Marp
-**`**bold**` and `$math$` SILENTLY FAIL inside HTML containers (`<div>`, `<table>`, `<ul>`).**
-You MUST use HTML tags directly:
-- `<b>text</b>` not `**text**`
-- `<i>N</i>` not `$N$`
-- `<i>r<sub>a</sub></i>` not `$r_a$`
-- `&kappa;` not `$\kappa$`
-- `&approx;` not `$\approx$`
+## Universal Rendering Rules (NEVER violate)
 
-Only use `$...$` KaTeX when inside a `markdown="1"` container with **blank lines** around the math.
+### Lesson 1: Markdown Inside HTML is BROKEN
+- [ ] All `<div>`, `<table>`, `<td>` content uses HTML tags only
+- [ ] No `**bold**` inside HTML containers (use `<b>`)
+- [ ] No `$math$` inside HTML containers (use `<i>`, `<sub>`, `&kappa;`, etc.)
 
-### Lesson 2: Post-Processor is Mandatory
-After generating slides.md, ALWAYS run `fix_markdown.py` to convert any remaining `**` → `<b>` and `$var$` → `<i>var</i>` inside HTML containers.
+### Lesson 2: Every Slide Needs `<style scoped>`
+- [ ] Each slide has its own `<style scoped>` block
+- [ ] Font sizes are tuned per-slide for 4K canvas
 
-### Lesson 3: Never Use Markdown Tables for Complex Data
-Use pre-cropped **table image PNGs** (`figures/tables/table-1.png`) for architecture ablation tables.
-Use raw **HTML `<table>` with custom CSS classes** for the 7B results table (17 rows × 7 columns).
+### Lesson 3: HTML Tables for Large Data
+- [ ] Tables with >8 rows use HTML `<table>` (not Markdown `|---|`)
+- [ ] Row highlighting uses CSS classes
 
-### Lesson 4: Every Slide Needs `<style scoped>`
-The gold standard has **11 separate `<style scoped>` blocks** — one per slide — with pixel-perfect sizing. A single global CSS block produces garbage on 4K canvas.
+### Lesson 4: Image Crops for Complex Tables
+- [ ] Multi-column ablation tables are pre-cropped PNG images
+- [ ] Images have `border-radius` and `box-shadow`
 
-### Lesson 5: File Size is a Quality Proxy
-- **Gold standard**: 42,492 bytes, 1,038 lines
-- **Skeleton garbage**: 2,481 bytes, 96 lines
-- If your output is under 20KB, it's a skeleton. Re-generate.
+### Lesson 5: Content Density
+- [ ] Total file size > 20KB (not a skeleton)
+- [ ] Each slide has meaningful content (not just a heading)
 
-### Lesson 6: Python Rubric Must Check CONTENT, Not Just Structure
-The validator must check:
-- All 10 author names individually
-- All 4 affiliations individually
-- 10+ specific data points (BPC 0.4590, r_a=20.07%, 68B, etc.)
-- Forbidden hallucination terms
-- Figure paths for all 11 required figures
-- Font-family and color consistency in CSS
-- Takeaway sentences near key charts
+### Lesson 6: Generator Does NOT Self-Evaluate
+- [ ] Agent1 did not modify this rubric
+- [ ] Only Agent2 or the Python validator updated checkboxes
 
-### Lesson 7: Use `theme: theme-4k` and `size: 4k`
-Never use `theme: default` for 4K presentations. The `theme-4k.css` file is required.
+### Lesson 7: Use Custom Theme
+- [ ] `theme:` in frontmatter points to a real `.css` file (not `default`)
+- [ ] `size: 4k` is set in frontmatter
+- [ ] `math: katex` is set in frontmatter
 
-## Pipeline Commands
-```bash
-# 1. Generate slides.md (Agent)
-# 2. Post-process markdown
-python3 fix_markdown.py
-# 3. Compile to 4K PDF
-marp --pdf slides.md --theme theme-4k.css --allow-local-files
-# 4. Validate
-python3 validate_rubric.py --workspace .
-```
+## Paper-Specific Checks (CUSTOMIZE PER PAPER)
+
+### Authors & Affiliations
+- [ ] All authors listed with correct superscripts
+- [ ] All affiliations present
+
+### Data Fidelity
+- [ ] Key numerical claims match paper source exactly
+- [ ] No invented/approximated numbers
+
+### Required Figures
+- [ ] All required figures referenced on correct slides
+- [ ] Figure captions match paper
+
+### Forbidden Terms
+- [ ] No hallucinated terminology
+- [ ] No invented model names
+
+## Compilation
+- [ ] `marp --pdf slides.md --theme <theme>.css --allow-local-files` succeeds
+- [ ] PDF page count matches slide count
+- [ ] No visible rendering artifacts in PDF

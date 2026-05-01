@@ -1,0 +1,45 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python-version: ["3.9", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run tests
+        run: |
+          PYTHONPATH=src python -m pytest tests/ -v
+
+      - name: Test CLI import
+        run: |
+          PYTHONPATH=src python -c "from academic_slides_agent.cli import main; print('CLI import OK')"
+
+      - name: Test validator standalone
+        run: |
+          echo "---
+          marp: true
+          math: katex
+          ---
+          # Test slide" > /tmp/test_slides.md
+          PYTHONPATH=src python -m academic_slides_agent.validator /tmp/test_slides.md --config examples/moe_paper/paper_config.yaml || true
