@@ -22,6 +22,50 @@ def setup_keys():
 
 
 @main.command()
+@click.option("--output", "-o", default="paper_config.yaml", help="Output file path")
+def init(output):
+    """Interactively create a paper_config.yaml for your paper."""
+    import yaml
+
+    print("\n📝 Academic Slides Agent — Paper Config Generator")
+    print("=" * 50)
+
+    config = {}
+    config["title"] = input("\nPaper title: ").strip()
+    config["conference"] = input("Conference (e.g., ICLR 2026): ").strip()
+
+    authors_input = input("Authors (comma-separated): ").strip()
+    config["authors"] = [a.strip() for a in authors_input.split(",") if a.strip()]
+
+    affils_input = input("Affiliations (comma-separated): ").strip()
+    config["affiliations"] = [a.strip() for a in affils_input.split(",") if a.strip()]
+
+    config["min_pages"] = int(input("Min slide count [8]: ").strip() or "8")
+    config["max_pages"] = int(input("Max slide count [15]: ").strip() or "15")
+    config["min_file_bytes"] = 5000
+    config["min_scoped_css"] = config["min_pages"] - 2
+
+    figs_input = input("Required figure filenames (comma-separated, no ext): ").strip()
+    if figs_input:
+        config["required_figures"] = [f.strip() for f in figs_input.split(",") if f.strip()]
+
+    print("\n📊 Key data points (enter empty label to stop):")
+    config["data_points"] = []
+    while True:
+        label = input("  Data point label: ").strip()
+        if not label:
+            break
+        pattern = input(f"  Regex pattern for '{label}': ").strip()
+        config["data_points"].append({"label": label, "patterns": [pattern]})
+
+    with open(output, "w", encoding="utf-8") as f:
+        yaml.dump(config, f, default_flow_style=False, allow_unicode=True, sort_keys=False)
+
+    print(f"\n✅ Config saved to: {output}")
+    print(f"   Edit it to add slide_specs, forbidden_terms, etc.")
+
+
+@main.command()
 @click.argument("slides_md")
 @click.option("--config", default="paper_config.yaml", help="Paper config YAML")
 def validate(slides_md, config):

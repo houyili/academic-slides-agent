@@ -15,7 +15,7 @@ import subprocess
 import argparse
 
 
-def count_rubric_checkboxes(rubric_path: str) -> tuple[int, int, list[str]]:
+def count_rubric_checkboxes(rubric_path: str):
     """Count checked/unchecked items in a markdown rubric.
 
     Returns:
@@ -58,10 +58,20 @@ def run_compiler(workspace: str, theme: str = "") -> bool:
     """Run Marp CLI to compile slides. Returns True if successful."""
     slides_md = os.path.join(workspace, "slides.md")
     cmd = ["marp", "--pdf", slides_md, "--allow-local-files"]
-    if theme and os.path.exists(theme):
-        cmd.extend(["--theme", theme])
 
-    result = subprocess.run(cmd, capture_output=True, text=True)
+    # Resolve theme path: try as-is, then relative to workspace, then relative to repo root
+    if theme:
+        theme_resolved = None
+        for candidate in [theme, os.path.join(workspace, theme), os.path.abspath(theme)]:
+            if os.path.exists(candidate):
+                theme_resolved = os.path.abspath(candidate)
+                break
+        if theme_resolved:
+            cmd.extend(["--theme", theme_resolved])
+        else:
+            print(f"  ⚠️  Theme not found: {theme}")
+
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=workspace)
     if result.returncode != 0:
         print(f"  ❌ Marp compilation failed:\n{result.stderr}")
         return False

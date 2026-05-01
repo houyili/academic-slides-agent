@@ -158,3 +158,28 @@ The `judge_loop.py` orchestrator drives this cycle. It should:
 7. ❌ Inventing hardware numbers ("2000 H100") — say "Thousands of GPU"
 8. ❌ Skipping `<style scoped>` — slides will have wrong sizing
 9. ❌ Copying gold standard verbatim — the skill must GENERATE, not copy
+
+## VLM-Verified Rules (from visual testing)
+
+These rules were discovered through visual inspection of compiled PDFs:
+
+#### Rule 7: Title Overflow Prevention
+On 4K canvas (3840×2160), h1 at 80-88px will overflow for titles > ~40 characters.
+- **Short titles (≤ 40 chars)**: Use h1 at 88px
+- **Medium titles (40-60 chars)**: Use h1 at 72px
+- **Long titles (> 60 chars)**: Use h1 at 56-64px, or split across two lines
+
+#### Rule 8: Minimum Font Sizes for Readability
+For an academic talk where the audience is 3-10 meters from the screen:
+- **Body text**: ≥ 48px (never below 44px)
+- **Table cells**: ≥ 44px
+- **Captions**: ≥ 40px
+- **Card descriptions**: ≥ 44px (38px is too small in practice)
+- **Footnotes**: ≥ 36px
+
+#### Rule 9: Caption Truncation in Two-Column Layouts
+When using `.cols` with 50/50 split, captions under images will truncate if they exceed ~50 characters. Keep captions short or use `word-break: break-word`.
+
+#### Rule 10: Marp PDF vs HTML Differences
+The PDF output may clip content that looks fine in HTML preview. Always verify against the **PDF**, not the browser preview.
+

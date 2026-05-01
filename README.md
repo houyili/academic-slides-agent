@@ -53,6 +53,13 @@ cd academic-slides-agent
 chmod +x setup.sh && ./setup.sh
 ```
 
+**Alternative** (if `pip install` fails on older systems):
+```bash
+pip3 install -r requirements.txt
+export PYTHONPATH=src  # add to .bashrc/.zshrc for persistence
+python3 -m academic_slides_agent --help
+```
+
 **Prerequisites:**
 - Python ≥ 3.9
 - Node.js ≥ 18 (for Marp CLI)
@@ -73,7 +80,13 @@ cp .env.example .env
 
 ### 3. Create Paper Config
 
-Create a `paper_config.yaml` for your paper (see `examples/moe_paper/paper_config.yaml`):
+Use the interactive wizard or create manually:
+
+```bash
+slides init  # Interactive — prompts for title, authors, figures, data points
+```
+
+Or create `paper_config.yaml` manually (see `examples/moe_paper/paper_config.yaml`):
 
 ```yaml
 title: "Your Paper Title"
