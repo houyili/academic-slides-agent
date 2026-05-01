@@ -48,7 +48,7 @@ A multi-agent pipeline for generating high-fidelity **4K academic presentations*
 ### 1. Install
 
 ```bash
-git clone https://github.com/<your-username>/academic-slides-agent.git
+git clone https://github.com/houyili/academic-slides-agent.git
 cd academic-slides-agent
 chmod +x setup.sh && ./setup.sh
 ```
@@ -56,7 +56,6 @@ chmod +x setup.sh && ./setup.sh
 **Prerequisites:**
 - Python ≥ 3.9
 - Node.js ≥ 18 (for Marp CLI)
-- macOS / Linux / Windows
 
 ### 2. Configure API Keys
 
@@ -140,22 +139,47 @@ academic-slides-agent/
 ├── themes/
 │   └── academic-emerald-4k.css
 ├── examples/moe_paper/      # ICLR 2026 MoE paper example
+├── tests/                   # Unit tests
 ├── setup.sh                 # One-click install
 ├── pyproject.toml            # Dependencies
+├── requirements.txt          # Pip fallback
 └── .env.example              # API key template
 ```
 
 ## Dependencies
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@marp-team/marp-cli` | ≥ 4.0 | Markdown → PDF/PPTX |
-| `click` | ≥ 8.0 | CLI framework |
-| `keyring` | ≥ 25.0 | System credential store |
-| `pyyaml` | ≥ 6.0 | Config files |
-| `openai` | ≥ 1.0 | LLM API (optional) |
-| `anthropic` | ≥ 0.30 | LLM API (optional) |
-| `python-dotenv` | ≥ 1.0 | .env fallback |
+| Package | Version | Required | Purpose |
+|---------|---------|:--------:|---------|
+| `@marp-team/marp-cli` | ≥ 4.0 | ✅ | Markdown → PDF/PPTX |
+| `click` | ≥ 8.0 | ✅ | CLI framework |
+| `keyring` | ≥ 25.0 | ✅ | System credential store |
+| `pyyaml` | ≥ 6.0 | ✅ | Config files |
+| `python-dotenv` | ≥ 1.0 | ✅ | .env fallback |
+| `openai` | ≥ 1.0 | Optional | LLM API for auto-generation |
+| `anthropic` | ≥ 0.30 | Optional | LLM API for auto-generation |
+
+Install optional LLM deps: `pip install academic-slides-agent[llm]`
+
+## Platform Compatibility
+
+| OS | Status | Notes |
+|----|:------:|-------|
+| **macOS** | ✅ Full | Homebrew for Node.js, native Keychain Access |
+| **Linux (Ubuntu/Debian)** | ✅ Full | apt for Node.js, GNOME Keyring / KDE Wallet |
+| **Linux (Fedora/RHEL)** | ✅ Full | dnf for Node.js |
+| **Linux (Arch)** | ✅ Full | pacman for Node.js |
+| **Windows (WSL)** | ✅ Full | Uses Linux path within WSL |
+| **Windows (native)** | ⚠️ Partial | Requires manual Node.js install; Credential Locker works |
+
+## Testing
+
+```bash
+# Run all tests
+PYTHONPATH=src python3 tests/test_validator.py
+
+# Or with pytest (if installed)
+PYTHONPATH=src pytest tests/ -v
+```
 
 ## Security
 
@@ -165,6 +189,7 @@ academic-slides-agent/
   - Windows: Credential Locker
 - **No keys are ever written to files** in the repo
 - `.env` is in `.gitignore` as a safety net
+- No personal information is included in the codebase
 
 ## License
 
