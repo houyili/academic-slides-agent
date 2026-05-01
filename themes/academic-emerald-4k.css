@@ -114,3 +114,87 @@ blockquote {
   border-radius: 12px;
   color: #064e3b;
 }
+
+/* ── Utility Classes (Layouts) ──────────────────── */
+/* Use these classes via <!-- _class: className --> or wrappers to avoid scoped CSS */
+
+/* Title Slide Container */
+.title-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+/* Hide pagination on title container */
+section:has(.title-container)::after {
+  content: none !important;
+}
+
+/* Logo row */
+.logo-row {
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  margin-top: 60px;
+  align-items: center;
+  width: 100%;
+}
+.logo-row img {
+  height: 120px !important;
+  max-width: 300px;
+  object-fit: contain;
+}
+
+/* Two Column Layout */
+.cols {
+  display: flex;
+  gap: 60px;
+  width: 100%;
+  margin-top: 30px;
+}
+.col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 2x2 Grid Layout */
+.grid-2x2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+/* Highlights & Callouts */
+.callout {
+  background: #ecfdf5;
+  border-left: 8px solid #10b981;
+  padding: 30px 40px;
+  border-radius: 16px;
+  font-size: 48px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+.callout-gradient {
+  background: linear-gradient(135deg, #064e3b, #059669);
+  color: white;
+  padding: 40px 60px;
+  border-radius: 24px;
+  font-size: 56px;
+  line-height: 1.5;
+  margin-top: 30px;
+}
+
+/* Image Captions */
+.caption {
+  font-size: 44px;
+  color: #475569;
+  text-align: center;
+  margin-top: 16px;
+  word-break: break-word;
+}

@@ -134,6 +134,8 @@ Feed the prompts in `prompts/` to your preferred AI coding agent:
 | 5 | **File size is a quality proxy** | < 15KB = skeleton garbage, ≥ 30KB = real content |
 | 6 | **Generator must NOT self-evaluate** | Prevents reward hacking — always use Python validator |
 | 7 | **Never use `theme: default` for 4K** | Must use custom theme with proper font sizing |
+| 8 | **VLM Repagination vs Validator** | VLMs often split dense slides to improve readability. If your `paper_config.yaml` hardcodes `slide_specs` to specific slide numbers, validation will falsely fail. Use `slide_specs` cautiously. |
+| 9 | **CSS Unconstrained Images Explosion** | Without `max-height` constraints in your CSS theme (like `.logo-row`), Marp's layout engine auto-expands images to fill containers, destroying the layout. |
 
 ## Project Structure
 

@@ -44,20 +44,22 @@ Using the extracted fingerprint, generate a `slides_sop.md` that specifies:
 
 ### Slide Layout Patterns (reusable templates)
 
-| Layout | Use When | CSS Pattern |
+The `academic-emerald-4k` theme provides built-in utility classes. **Use these classes instead of writing custom `<style scoped>` when possible:**
+
+| Layout | Use When | Built-in Class to Use |
 |--------|----------|-------------|
-| **Title** | Slide 1 always | Centered, logo bar, author grid |
-| **Two-Column Text** | Motivation, framing | `.cols { display: flex; gap: 80px }` |
-| **Question Box** | Core RQ | Dark gradient box + stat cards |
-| **Dual Figure** | Comparing two plots | Side-by-side `img` with captions + equations |
-| **Three-Card Grid** | Methodology pipeline | `grid-template-columns: repeat(3, 1fr)` |
-| **Table + Image Grid** | Ablation results | Top: markdown table, Bottom: 2×2 image grid |
-| **Figure + Bullet Analysis** | Experimental results | Left: large figure, Right: bullet findings |
-| **Full HTML Table** | Large data table (>10 rows) | HTML `<table>` with row highlighting classes |
-| **Figure + Data Table** | Sweet spot / key result | Left: figure + analysis, Right: HTML table |
-| **2×2 Eval Grid** | Benchmark results | `grid-template-columns: 1fr 1fr` + findings card |
-| **Conclusion Cards** | Summary / guidance | Left: stacked cards, Right: example/guidance |
-| **Thank You / Q&A** | Final slide always | Centered huge text, contact info, QR code |
+| **Title** | Slide 1 always | `<div class="title-container">` for wrap, `<div class="logo-row">` for logos |
+| **Two-Column Text** | Motivation, framing | `<div class="cols"><div class="col">...</div></div>` |
+| **Question Box** | Core RQ | `<div class="callout-gradient">` |
+| **Dual Figure** | Comparing two plots | `.cols` + `<img>` + `<div class="caption">` |
+| **Three-Card Grid** | Methodology pipeline | Custom flex/grid required via `<style scoped>` |
+| **Table Images** | Wide table crops | Stack vertically or use 2 slides. Do NOT use `.grid-2x2` for wide tables. |
+| **Figure + Bullet Analysis** | Experimental results | `.cols` |
+| **Full HTML Table** | Large data table (>10 rows) | HTML `<table>` with `.highlight-row` |
+| **Figure + Data Table** | Sweet spot / key result | `.cols` |
+| **2×2 Eval Grid** | Benchmark results | `<div class="grid-2x2">` + `.callout` |
+| **Conclusion Cards** | Summary / guidance | Custom flex layout required via `<style scoped>` |
+| **Thank You / Q&A** | Final slide always | `<div class="title-container">` |
 
 ## Phase 3: Generate Slides
 
