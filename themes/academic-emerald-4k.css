@@ -1,0 +1,8 @@
+/* @theme theme-4k */
+@import 'default';
+
+/* @size 4k 3840px 2160px */
+section {
+  width: 3840px;
+  height: 2160px;
+}
