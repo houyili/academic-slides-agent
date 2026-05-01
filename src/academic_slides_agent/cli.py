@@ -4,9 +4,11 @@ import click
 import os
 import sys
 
+from . import __version__
+
 
 @click.group()
-@click.version_option()
+@click.version_option(version=__version__, prog_name="academic-slides-agent")
 def main():
     """Academic Slides Agent — Generate 4K presentations from research papers."""
     pass
